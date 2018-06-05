@@ -1,0 +1,12 @@
+.region-title {
+  width: 100%;
+  position:relative;
+  @include media-desktop {
+    h1.page-title {
+      span {
+        display: inline-block;
+        max-width: 650px;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@import "../sass-flex-mixin/_flex";
+
+
+// OVERRIDES
+
+// Flexbox
+//--------------
+// Set the number of columns you want to use on your layout.
+// $flexboxgrid-grid-columns: 12 !default;
+// Set the gutter between columns.
+// $flexboxgrid-gutter-width: 1rem !default;
+// Set a margin for the container sides.
+// $flexboxgrid-outer-margin: 2rem !default;
+
+
+$flexboxgrid-breakpoints:
+  sm map-get($grid-bp, phone-landscape) map-get($grid-container-max-widths, phone-landscape),
+  md map-get($grid-bp, tablet) map-get($grid-container-max-widths, tablet),
+  lg map-get($grid-bp, desktop) map-get($grid-container-max-widths, desktop),
+  xl map-get($grid-bp, desktop-large) map-get($grid-container-max-widths, desktop-large),
+  xxl map-get($grid-bp, desktop-extra-large) map-get($grid-container-max-widths, desktop-extra-large);
+
+$flexboxgrid-max-width: map-get($grid-bp, desktop-extra-large) !default;
+
+@each $breakpoint in $flexboxgrid-breakpoints {
+  $size: nth($breakpoint, 2);
+  $container: nth($breakpoint, 3);
+  @media only screen and (min-width: $size) {
+    .container {
+      width: $container;
+    }
+  }
+}

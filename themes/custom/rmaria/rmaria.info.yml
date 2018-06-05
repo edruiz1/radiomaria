@@ -1,0 +1,28 @@
+name: Radio María Theme
+description: Theme for Radio María.
+base theme: classy
+package: Custom
+type: theme
+version: '1.0'
+core: '8.x'
+# libraries:
+#   - mls/vuejs2
+#   - mls/createjs
+#   - mls/jquery-ui
+#   # Enable next line in production environment
+#   # - msl/global-css
+#   # - msl/global-js
+#   # - msl/react-min
+#   # - msl/react-dom-min
+#   # - msl/materialize-min
+
+regions:
+  content: Content
+  title: Title
+  header_logo: 'Header Logo'
+  header_social: 'Header Social'
+  header_menu: 'Header Menu'
+  sidebar: Sidebar
+  footer_legal: 'Legal Disclaimer'
+  footer_links: 'Footer Links'
+  aux: 'Auxiliar'

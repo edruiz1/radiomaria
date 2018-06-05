@@ -1,0 +1,35 @@
+<?php
+
+use Drupal\editor\Entity\Editor;
+
+function rmaria_aux_preprocess_page(&$vars) {
+  $vars['#attached']['library'][] = 'rmaria_aux/rmaria_aux';
+
+  $config = \Drupal::config('rmaria_aux.settings');
+  if (!empty($config->get('loader_uuid')) && boolval($config->get('active')) === TRUE) {
+    $vars['#attached']['drupalSettings']['rmaria_aux']['loader_uuid'] = $config->get('loader_uuid');
+  }
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ *
+ * Injects our CSS sheets anytime CKEditor has loaded.
+ *
+ * @param array $css
+ * @param Drupal\editor\Entity\Editor $editor
+ */
+function rmaria_aux_ckeditor_css_alter(array &$css, Editor $editor) {
+  if (!$editor->hasAssociatedFilterFormat()) {
+    return;
+  }
+
+  $known_formats = [
+    'basic_html',
+    'full_html'
+  ];
+
+  if (in_array($editor->getFilterFormat()->id(), $known_formats)) {
+    $css[] = drupal_get_path('theme', 'rmaria') . '/build/css/styles.css';
+  }
+}

@@ -1,0 +1,12 @@
+name: Radio Mária - Auxiliar Module
+core: 8.x
+description: Provides extra behaviors for radio maria theme.
+package: Util
+type: module
+
+dependencies:
+  - rest
+  - restui
+
+libraries:
+  - rmadia_aux

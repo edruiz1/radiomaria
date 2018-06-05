@@ -1,0 +1,34 @@
+global:
+  css:
+    theme:
+      build/css/styles.css: {}
+  js:
+    build/js/bundle.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once
+    - core/drupalSettings
+createjs:
+  remote: https://code.createjs.com/
+  version: 2015.11.26
+  license:
+    name: MIT
+    url: https://github.com/CreateJS/EaselJS/blob/master/LICENSE.txt
+    gpl-compatible: true
+  js:
+    //code.createjs.com/createjs-2015.11.26.min.js: { type: external, minified: true }
+jquery-ui:
+  remote: https://code.jquery.com/ui/
+  version: 1.12.1
+  license:
+    name: MIT
+    url: https://jquery.org/license/
+    gpl-compatible: true
+  css:
+    theme:
+      //code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css: { type: external }
+  js:
+    //code.jquery.com/ui/1.12.1/jquery-ui.min.js: { type: external, minified: true }
+  dependencies:
+    - core/jquery

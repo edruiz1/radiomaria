@@ -1,0 +1,194 @@
+header{
+  background-color: $color-white;
+  text-align: center;
+  .container {
+    display:block;
+    text-align: left;
+  }
+  #block-rmaria-branding {
+    text-align: center;
+    a.site-logo {
+      img {
+        margin:1rem;
+        max-width: 220px;
+        @include media-desktop {
+          margin: initial;
+        }
+      }
+    }
+  }
+  @include media-tablet {
+    .container {
+      display:inline-block;
+    }
+  }
+}
+
+.region-header-social {
+  display: flex;
+  background-color: $color-scarlet;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  .en-vivo {
+    a {
+      display: block;
+      font-size: 0;
+      background-image: url('../../images/escuchanos-en-vivo.gif');
+      height: 29px;
+      width: 165px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+nav.menu--social-menu{
+  display: flex;
+  justify-content: flex-start;
+  /*margin-bottom: 1em;*/
+  /*padding: 0 1rem;*/
+  > * {
+    align-self: center;
+  }
+  h2 {
+    // padding:0 0.5rem;
+    display: inline-block;
+    font-size:0.6rem;
+    text-transform: uppercase;
+    color: $color-white;
+  }
+  ul {
+    display: inline-flex;
+    font-size: 1rem;
+    li {
+      align-self:center;
+      a {
+        display: inline-block;
+        width:2rem;
+        height: 1rem;
+        overflow: hidden;
+        padding: 0 0.4rem;
+        color: $color-white;
+        &:before {
+          display: inline-block;
+          width:1rem;
+        }
+      }
+    }
+  }
+  @include media-tablet {
+    justify-content: flex-end;
+  }
+}
+
+
+
+nav.menu--main{
+  ul {
+    display:flex;
+    align-items:stretch;
+    flex-direction: column;
+    margin: 0;
+    max-height: 0;
+    transition: max-height 0.4s ease-out;
+    transition: 0.4s;
+    overflow: hidden;
+    li{
+      // align-self:center;
+      flex-basis: calc(100% / 7);
+      vertical-align: middle;
+      display:flex;
+      a {
+        color: $color-white;
+        display:inline-block;
+        padding: 0.5rem;
+        align-self: center;
+        text-align: center;
+        width: 100%;
+      }
+      &.color-orange{
+        background-color: $color-orange;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-orange;
+          }
+        }
+      }
+      &.color-lilac{
+        background-color: $color-lilac;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-lilac;
+          }
+        }
+      }
+      &.color-purple{
+        background-color: $color-purple;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-purple;
+          }
+        }
+      }
+      &.color-green{
+        background-color: $color-green;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-green;
+          }
+        }
+      }
+      &.color-blue{
+        background-color: $color-blue;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-blue;
+          }
+        }
+      }
+      &.color-navy{
+        background-color: $color-navy;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-navy;
+          }
+        }
+      }
+      &.color-gold{
+        background-color: $color-gold;
+        &:hover, &.menu-item--active-trail {
+          background-color: $color-white;
+          a{
+            font-weight: bold;
+            color: $color-gold;
+          }
+        }
+      }
+    }
+    &.change {
+      // height: auto;
+      max-height: 500px;
+      transition: max-height 0.25s ease-in;
+    }
+    @include media-tablet {
+      flex-direction: row;
+      max-height: initial;
+      &.change {
+        max-height: initial;
+      }
+    }
+  }
+}

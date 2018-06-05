@@ -1,0 +1,43 @@
+.view-id-radio_programs {
+  .view-content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    .views-row {
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+      article {
+        display: flex;
+        .left{
+          flex-basis: 30%;
+          text-align: center;
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+        .right {
+          padding: 0.5rem;
+          flex-basis: 70%;
+          h3 {
+            margin: 0;
+            font-size:1.5rem;
+          }
+          .host {
+            span {
+              font-size: 0.8rem;
+            }
+            font-size: 1rem;
+            font-weight: bold;
+          }
+          .hours {
+            font-size: 0.8rem;
+          }
+          .links {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+// FOLDERS
+//--------------
+$img-base-url: "../images/";
+$font-base-url: "../fonts/";
+$theme-assets-url: '/themes/custom/rmaria/build';
+$node-modules-url: './../node_modules/';
+
+
+// Fonts
+//--------------
+$base-font-size: 14px;
+$font-primary: 'Nunito', sans-serif;
+$font-secondary: 'NunitoLight', 'Times New Roman', Times, serif;
+$font-icons: 'FontAwesome';
+
+$fa-font-path: $font-base-url + "fa/";
+
+// Colors
+//--------------
+$color-red: #ff0028;
+$color-scarlet: #c80028;
+$color-white: #FFF;
+$color-black: #000;
+$color-dark-gray: #666666;
+$color-gray: #cccccc;
+$color-light-gray: #e6e6e6;
+$color-orange: #ff7800;
+$color-lilac: #c933c9;
+$color-purple: #8200c8;
+$color-green: #0abe32;
+$color-blue: #00a0c8;
+$color-navy: #0a6478;
+$color-gold: #bf8701;
+
+$color-social-twitter: #1dcaff;
+$color-social-facebook: #3b5998;
+$color-social-google: #d34836;
+$color-social-linkedin: #0077B5;
+
+// Grid Breakpoints
+//--------------
+$grid-bp: (
+  phone: 320px,
+  phone-landscape: 540px,
+  tablet: 768px,
+  desktop: 1024px,
+  large: 1280px
+);
+
+$grid-container-max-widths: (
+  phone: 100%,
+  phone-landscape: 100%,
+  tablet: 100%,
+  desktop: 1024px,
+  large: 1280px
+);

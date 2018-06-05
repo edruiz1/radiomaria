@@ -1,0 +1,9 @@
+.fa-container {
+  .fa {
+    font-family: $font-primary;
+    &:before{
+      font-family: $font-icons;
+      padding-right: 10px;
+    }
+  }
+}

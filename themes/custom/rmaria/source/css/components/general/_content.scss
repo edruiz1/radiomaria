@@ -1,0 +1,143 @@
+body {
+  max-width: 100vw;
+  // overflow-x: hidden;
+}
+
+img {
+  height: auto;
+}
+
+.page-content{
+  text-align: center;
+  // padding:0 1rem 1rem;
+  > .container {
+    min-width: 100%;
+    display:inline-block;
+    text-align: left;
+    @include media-desktop {
+      min-width: initial;
+    }
+  }
+  main {
+    min-height: 360px;
+  }
+  main, .region--sidebar {
+    background-color: $color-white;
+  }
+  table {
+    border: solid 1px $color-white;
+    width: 100%;
+    tr {
+      display: flex;
+      flex-direction: column;
+      td {
+        display: block;
+        border: solid 1px $color-white;
+        padding: 0 0 1rem;
+        vertical-align: top;
+      }
+    }
+    @include media-tablet {
+      tr {
+        display: table-row;
+        td {
+          display: table-cell;
+          padding: 0 1rem 1rem 0;
+        }
+      }
+    }
+  }
+  hr {
+    margin: 1.5rem 0 1.5rem;
+    padding: 0;
+    border:solid 1px $color-dark-gray;
+  }
+  &.color-orange{
+    color: $color-orange;
+    hr {
+      border:solid 1px $color-orange;
+    }
+  }
+  &.color-lilac{
+    color: $color-lilac;
+    hr {
+      border:solid 1px $color-lilac;
+    }
+  }
+  &.color-purple{
+    color: $color-purple;
+    hr {
+      border:solid 1px $color-purple;
+    }
+  }
+  &.color-green{
+    color: $color-green;
+    hr {
+      border:solid 1px $color-green;
+    }
+  }
+  &.color-blue{
+    color: $color-blue;
+    hr {
+      border:solid 1px $color-blue;
+    }
+  }
+  &.color-navy{
+    color: $color-navy;
+    hr {
+      border:solid 1px $color-navy;
+    }
+  }
+  &.color-gold{
+    color: $color-gold;
+    hr {
+      border:solid 1px $color-gold;
+    }
+  }
+}
+
+.node__content, .cke_editable {
+  text-align: left;
+  .red {
+    color: #ff0028;
+  }
+  .scarlet {
+    color: #c80028;
+  }
+  .white {
+    color: #FFF;
+  }
+  .black {
+    color: #000;
+  }
+  .dark-gray {
+    color: #666666;
+  }
+  .gray {
+    color: #cccccc;
+  }
+  .light-gray {
+    color: #e6e6e6;
+  }
+  .orange {
+    color: #ff7800;
+  }
+  .lilac {
+    color: #c933c9;
+  }
+  .purple {
+    color: #8200c8;
+  }
+  .green {
+    color: #0abe32;
+  }
+  .blue {
+    color: #00a0c8;
+  }
+  .navy {
+    color: #0a6478;
+  }
+  .gold {
+    color: #bf8701;
+  }
+}

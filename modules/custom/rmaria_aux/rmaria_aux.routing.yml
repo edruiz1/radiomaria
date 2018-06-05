@@ -1,0 +1,7 @@
+rmaria_aux.admin_settings:
+  path: '/admin/config/social-event'
+  defaults:
+    _form: '\Drupal\rmaria_aux\Form\SocialEventForm'
+    _title: 'Form to save social event information'
+  requirements:
+    _permission: 'administer site configuration'

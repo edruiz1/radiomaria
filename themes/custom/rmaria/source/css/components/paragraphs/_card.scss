@@ -1,0 +1,40 @@
+.paragraph--type--card {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+
+  // align-items: center;
+  align-items: stretch;
+  white-space: wrap;
+  align-content: flex-start;
+  justify-content: center;
+
+  .field {
+    // min-height: 200px;
+    padding: 0.5rem;
+    align-self: center;
+  }
+  .field--name-field-title {
+    background-color: $color-light-gray;
+    border: dashed 2px $color-purple;
+    height:180px;
+    width: 4rem;
+    position: relative;
+    // display:block;
+    // text-align: center;
+    // flex-basis: 8rem;
+    // overflow: hidden;
+    h3 {
+      position:absolute;
+      top: 80px;
+      left: -50px;
+      transform: rotate(-90deg);
+      margin: 0;
+      padding:0;
+      text-transform: uppercase;
+    }
+  }
+  .field--name-field-body-sf {
+    background-color: $color-white;
+  }
+}

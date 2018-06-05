@@ -1,0 +1,77 @@
+.block-page-title-block {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  h1.page-title {
+    display: block;
+    margin: 0.67em 1.5rem;
+    position: relative;
+    text-transform:uppercase;
+    @include media-tablet {
+    }
+    @include media-desktop {
+      margin: 0.67em 0.5rem;
+      &::after {
+        content: "";
+        position: absolute;
+        border-top: solid 2px $color-dark-gray;
+        height: 0px;
+        width: 1024px;
+        transform: translate(2%);
+        top: 1.2rem;
+      }
+    }
+  }
+}
+
+.page-content{
+  &.color-orange{
+    h1 {
+      &::after {
+        border-color: $color-orange;
+      }
+    }
+  }
+  &.color-lilac{
+    h1 {
+      &::after {
+        border-color: $color-lilac;
+      }
+    }
+  }
+  &.color-purple{
+    h1 {
+      &::after {
+        border-color: $color-purple;
+      }
+    }
+  }
+  &.color-green{
+    h1 {
+      &::after {
+        border-color: $color-green;
+      }
+    }
+  }
+  &.color-blue{
+    h1 {
+      &::after {
+        border-color: $color-blue;
+      }
+    }
+  }
+  &.color-navy{
+    h1 {
+      &::after {
+        border-color: $color-navy;
+      }
+    }
+  }
+  &.color-gold{
+    h1 {
+      &::after {
+        border-color: $color-gold;
+      }
+    }
+  }
+}

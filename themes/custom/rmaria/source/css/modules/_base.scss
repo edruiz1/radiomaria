@@ -1,0 +1,43 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  height: 100%;
+  position:relative;
+}
+
+body {
+  background-color: $color-light-gray;
+  color: $color-dark-gray;
+  font-family: $font-primary;
+  font-size: $base-font-size;
+  padding: 0;
+  text-align: center;
+  &.font-size-small {
+    main {
+      font-size: 12px;
+    }
+  }
+  &.font-size-big {
+    main {
+      font-size: 16px;
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+  color:$color-dark-gray;
+  font-weight: bold;
+}
+
+.page-wrapper{
+  display:inline-block;
+  max-width: 1280px;
+  text-align:left;
+  width:100vw;
+}

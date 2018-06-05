@@ -1,0 +1,38 @@
+.block-views-blockpodcast-podcast-home {
+  > h2 {
+    // display: block;
+    // text-align: center;
+    // font-size: 2rem;
+    // text-transform: uppercase;
+  }
+  .view-podcast {
+    > .view-content {
+      display: flex;
+      flex-direction: column;
+      // flex-wrap: wrap;
+      > .views-row {
+        // flex-basis: 50%;
+        .field--type-video-embed-field {
+          img {
+            width:100%;
+            height:auto;
+          }
+        }
+      }
+    }
+  }
+  @include media-tablet {
+    position: relative;
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      height:80%;
+      width:1px;
+      border-left: solid 2px $color-dark-gray;
+      top: 5rem;
+      bottom: 3rem;
+      left: -0.2rem;
+    }
+  }
+}

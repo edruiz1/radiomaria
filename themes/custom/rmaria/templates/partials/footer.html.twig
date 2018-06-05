@@ -1,0 +1,19 @@
+<footer id="footer" class="footer">
+  <div class="container">
+    <div class="row middle-xs">
+      <div class="col-xs-12 col-sm-4 left">
+        <div class="region--footer-legal">
+          {{ page.footer_legal }}
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-8 right">
+        <div class="region--footer-links">
+          {{ page.footer_links }}
+        </div>
+      </div>
+    </div>
+    {% if debugging %}
+      <div class="version">{{ qaVersion }}</div>
+    {% endif %}
+  </div>
+</footer>

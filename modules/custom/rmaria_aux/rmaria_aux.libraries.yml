@@ -1,0 +1,9 @@
+rmaria_aux:
+  version: 1.x
+  js:
+    source/js/social-event.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once

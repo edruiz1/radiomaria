@@ -1,0 +1,15 @@
+.view-programacion{
+  width: 100%;
+  > .view-content {
+    > .views-row {
+      display: flex;
+      > .views-field {
+        padding: 0.5rem;
+      }
+    }
+    @include media-phone-landscape {
+      column-count:2;
+      column-width: auto;
+    }
+  }
+}

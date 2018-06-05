@@ -1,0 +1,36 @@
+.view-id-last_news {
+  > .view-content {
+    display: flex;
+    flex-direction: column;
+    > .views-row {
+      padding-bottom: 0 1em 1em ;
+      &:nth-child(4n+1) {
+        h3 {
+          background-color: $color-purple;
+        }
+      }
+      &:nth-child(4n+2) {
+        h3 {
+          background-color: $color-blue;
+        }
+      }
+      &:nth-child(4n+3) {
+        h3 {
+          background-color: $color-navy;
+        }
+      }
+      &:nth-child(4n+4) {
+        h3 {
+          background-color: $color-gold;
+        }
+      }
+    }
+    @include media-tablet {
+      flex-direction: row;
+      flex-wrap: wrap;
+      > .views-row {
+        flex-basis: 50%;
+      }
+    }
+  }
+}

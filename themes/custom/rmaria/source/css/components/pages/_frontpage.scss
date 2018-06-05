@@ -1,0 +1,101 @@
+.path-frontpage {
+  .region-content {
+    display: flex;
+    flex-wrap: wrap;
+    > div {
+      flex-basis: 100%;
+    }
+    .block {
+      h2 {
+        display: block;
+        font-size: 2rem;
+        letter-spacing: 0.5rem;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        text-align: center;
+        width: 100%;
+        &::before {
+          content: "";
+          position: absolute;
+          border-top: solid 2px $color-dark-gray;
+          height: 0px;
+          width: 400px;
+          transform: translate(-105%);
+          top: 1.5rem;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          border-top: solid 2px $color-dark-gray;
+          height: 0px;
+          width: 400px;
+          transform: translate(5%);
+          top: 1.5rem;
+        }
+        &.slide__title {
+          font-size: 1em;
+          text-align: left;
+          &:before, &:after {
+            display: none !important;
+          }
+        }
+      }
+      .slide__caption {
+        .slide__title, .caption_description, .caption_link {
+          > a {
+            color: $color-white;
+            width:100%;
+          }
+        }
+        .caption_link {
+          text-align: right;
+        }
+        .caption_description, .caption_link {
+          > a {
+            font-weight: normal;
+          }
+        }
+      }
+    }
+    #block-twitterpagewidget, #block-facebookpagewidget-2, #block-instagrampagewidget {
+      text-align: center;
+      .field--name-body {
+        display: inline-block;
+        max-width: 320px;
+        text-align: center;
+      }
+    }
+
+    @include media-tablet {
+      .block-views-blockvideogaleria-live-tv {
+        flex-basis: 50%;
+        padding-right: 0.5rem;
+      }
+      .block-views-blockpodcast-podcast-home {
+        flex-basis: 50%;
+        padding-left: 0.5rem;
+      }
+    }
+    @include media-desktop {
+      #block-twitterpagewidget {
+        flex-basis: 33%;
+        padding-right: 0.5rem;
+      }
+      #block-facebookpagewidget-2 {
+        flex-basis: 33%;
+        padding-left: 0.5rem;
+        .field--name-body {
+          text-align: center;
+        }
+      }
+      #block-instagrampagewidget {
+        flex-basis: 33%;
+        padding-left: 0.5rem;
+        .field--name-body {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+.region-title {
+  .block-fontsize-block {
+    bottom : 1rem;
+    display: block;
+    padding: 0 1rem;
+    position: absolute;
+    right: 1em;
+    top: initial;
+    @include media-desktop {
+      background-color: $color-light-gray;
+      bottom: initial;
+      padding: 0.8rem 0.2rem;
+      top: 1em;
+    }
+    a {
+      color: inherit;
+      &.small {
+        font-size: 0.8em;
+      }
+      &.big {
+        font-size: 1.2em;
+      }
+    }
+  }
+}

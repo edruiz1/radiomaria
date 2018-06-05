@@ -1,0 +1,75 @@
+.path-webform {
+  .page-content {
+    main {
+      background-color:transparent;
+    }
+  }
+}
+
+form.webform-submission-contact-form {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+
+  .form-item {
+    flex-basis: 100%;
+    input {
+      width: 100%;
+      &.button {
+        @include media-tablet {
+          width: 70%;
+        }
+      }
+    }
+    @include media-tablet {
+      display: flex;
+      &.js-form-type-processed-text {
+        display: block;
+      }
+      > label {
+        flex-basis: 30%;
+      }
+      > input, > .form-textarea-wrapper {
+        flex-basis: 70%;
+        .edit-message_counter {
+          .edit-message_count {
+            font-style: bold;
+          }
+        }
+      }
+    }
+  }
+  .webform-actions {
+    > .webform-button--submit {
+      width: 100%;
+      @include media-tablet {
+        margin-left: 30%;
+        width: 70%;
+      }
+    }
+  }
+  #edit-container-right {
+    background-color: $color-blue;
+    color:$color-white;
+    padding:1rem;
+    a {
+      color: $color-white;
+    }
+    #contact-map {
+      background-color: $color-white;
+      display: block;
+      min-height: 200px;
+      width: 100%;
+    }
+  }
+  @include media-tablet {
+    flex-direction: row;
+    justify-content: space-between;
+    > div {
+      flex-basis: 47%;
+    }
+  }
+  @include media-desktop {
+    padding: 0;
+  }
+}

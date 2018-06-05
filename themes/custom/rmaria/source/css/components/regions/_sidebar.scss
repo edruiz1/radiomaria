@@ -1,0 +1,96 @@
+.region-sidebar {
+  .block-block-content {
+    text-align: center;
+  }
+  h2 {
+    border: dashed 2px $color-dark-gray;
+    color: $color-dark-gray;
+    display:inline-block;
+    font-size: 1em;
+    font-style: italic;
+    letter-spacing: 0.3rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  @include media-desktop {
+    padding: 1rem;
+    padding: 0;
+    position: relative;
+    &::before {
+      content:"";
+      border-left: solid 2px $color-dark-gray;
+      display:block;
+      height: 95%;
+      position: absolute;
+      top: 1.5rem;
+      width: 0;
+    }
+  }
+}
+
+.page-content{
+  &.color-orange{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-orange;
+        }
+      }
+    }
+  }
+  &.color-lilac{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-lilac;
+        }
+      }
+    }
+  }
+  &.color-purple{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-purple;
+        }
+      }
+    }
+  }
+  &.color-green{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-green;
+        }
+      }
+    }
+  }
+  &.color-blue{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-blue;
+        }
+      }
+    }
+  }
+  &.color-navy{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-navy;
+        }
+      }
+    }
+  }
+  &.color-gold{
+    .region-sidebar{
+      &::before {
+        @include media-desktop {
+          border-left-color: $color-gold;
+        }
+      }
+    }
+  }
+}

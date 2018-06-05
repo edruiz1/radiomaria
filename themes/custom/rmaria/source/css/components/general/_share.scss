@@ -1,0 +1,31 @@
+.page-content > .container {
+  position: relative !important;
+}
+
+.share-buttons {
+  background-color: $color-light-gray;
+  bottom: 1rem;
+  position: absolute;
+  right: 0;
+  .share-item {
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 0.2rem;
+    padding: 0.2rem 0.5rem;
+    .fa {
+      margin-right: 0.5rem;
+    }
+    &.share-twitter {
+      background-color: $color-social-twitter;
+      color: $color-white;
+    }
+    &.share-facebook {
+      background-color: $color-social-facebook;
+      color: $color-white;
+    }
+    &.share-google {
+      background-color: $color-social-google;
+      color: $color-white;
+    }
+  }
+}

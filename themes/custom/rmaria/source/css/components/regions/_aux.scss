@@ -1,0 +1,31 @@
+div.region-aux {
+  display: none;
+  &.overlay {
+    display: block;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    > div.block-social-event-block {
+
+    }
+
+    .btn {
+      &.btn-close {
+        display: block;
+        position: absolute;
+        right: 1em;
+        top: 0.5em;
+      }
+    }
+  }
+}

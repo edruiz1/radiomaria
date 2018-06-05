@@ -1,0 +1,19 @@
+form {
+  // background-color: $color-light-gray;
+  label {
+    color: $color-blue;
+    font-weight: bold;
+    padding: 0.25em 0;
+  }
+  input, textarea {
+    border: solid 0 $color-white;
+    padding: 0.25em 0.5em;
+    &[type=submit] {
+      background-color: $color-blue;
+      color: $color-white;
+      display:inline-block;
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
+}

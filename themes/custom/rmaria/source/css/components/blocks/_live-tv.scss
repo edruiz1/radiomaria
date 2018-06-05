@@ -1,0 +1,39 @@
+.block-views-blockvideogaleria-live-tv {
+  > h2 {
+    // display: block;
+    // text-align: center;
+    // font-size: 2rem;
+    // text-transform: uppercase;
+  }
+  .view-videogaleria {
+    > .view-content {
+      display: flex;
+      flex-wrap: wrap;
+      > .views-row {
+        flex-basis: 50%;
+        .field--type-video-embed-field {
+          img {
+            width:100%;
+            height:auto;
+          }
+        }
+      }
+      &:nth-child(2n+1) {
+        article {
+          padding-bottom:0.5rem;
+          padding-right:0.5rem;
+        }
+      }
+      &:nth-child(2n+2) {
+        article {
+          padding-bottom:0.5rem;
+          padding-left:0.5rem;
+        }
+      }
+    }
+  }
+}
+
+#block-tvenvivo {
+  flex-basis: 50%;
+}

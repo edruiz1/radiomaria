@@ -1,0 +1,67 @@
+<?php
+
+use \Drupal\Core\Form\FormStateInterface;
+
+function msl_preprocess_html(&$vars) {
+  // $viewport = array(
+  //  '#tag' => 'meta',
+  //  '#attributes' => array(
+  //    'name' => 'viewport',
+  //    'content' => 'width=device-width, initial-scale=1, maximum-scale=1',
+  //  ),
+  // );
+  // drupal_add_html_head($viewport, 'viewport');
+}
+
+function rmaria_preprocess_page(&$vars) {
+
+  $vars['#attached']['library'][] = 'rmaria/jquery-ui';
+  $vars['#attached']['library'][] = 'rmaria/global';
+  // if (isset($vars['debugging']) && $vars['debugging'] === true) {
+  // } else {
+  //   $vars['#attached']['library'][] = 'msl/prod';
+  // }
+  $vars['basePath'] = \Drupal::request()->getRequestUri();
+  $vars['base_path'] = base_path();
+
+  $vars['debugging'] = FALSE;
+  if (file_exists(\Drupal::root() . '/sites/default/settings.local.php')) {
+    $vars['debugging'] = TRUE;
+  }
+
+  $vars['color_theme'] = 'none';
+  if (isset($vars['node'])) {
+    $node = $vars['node'];
+    if ($node->hasField('field_theme_color')) {
+      $color_theme = $node->get('field_theme_color')->value;
+      $vars['color_theme'] = $color_theme;
+      // kint($color_theme);
+    }
+  } elseif ($vars['basePath'] == '/contactenos' || $vars['basePath'] == '/form/contact') {
+    $vars['color_theme'] = 'blue';
+  }
+
+  $file = dirname(__FILE__) . '/rmaria.theme';
+  if (file_exists($file)) {
+    $vars['qaVersion'] = 'v.' . date ("Ymd-His", filemtime($file));
+  }
+}
+
+/**
+* Add Theme Suggestions to Page Templates
+*/
+function rmaria_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if($hook === 'views_view') {
+    $suggestions[] = 'views-view--' . $variables['view']->id();
+  }
+
+  if($hook === 'views_view_unformatted') {
+    $suggestions[] = 'views-view-unformatted--' . $variables['view']->id();
+  }
+}
+
+function rmaria_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'webform_submission_contact_add_form') {
+    // kint($form);
+  }
+}

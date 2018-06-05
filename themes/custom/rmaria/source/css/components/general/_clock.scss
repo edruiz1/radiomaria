@@ -1,0 +1,11 @@
+.region-title {
+  .block-clock-block {
+    padding: 1rem 1.5rem;
+    @include media-desktop {
+      background-color: $color-light-gray;
+      position: absolute;
+      right: 5em;
+      top: 1em;
+    }
+  }
+}

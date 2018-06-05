@@ -1,0 +1,23 @@
+article.node--type-video{
+  &.node--view-mode-teaser{
+    padding:0.25rem;
+    position:relative;
+    h3 {
+      left:10px;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      a {
+        color: $color-white;
+      }
+    }
+  }
+}
+
+body.is-node-type-video {
+  main {
+    background-color: transparent;
+  }
+}

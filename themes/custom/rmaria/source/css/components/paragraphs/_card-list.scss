@@ -1,0 +1,18 @@
+.paragraph--type--card-list {
+  margin-bottom: 1em;
+  display: none;
+  .field--name-field-cards {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    > .field__item {
+      flex-basis: 50%;
+      align-self: stretch;
+      &:nth-child(2n+1) {
+        border-right: solid 2px $color-purple;
+      }
+    }
+  }
+}

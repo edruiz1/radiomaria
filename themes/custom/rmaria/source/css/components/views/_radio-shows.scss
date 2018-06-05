@@ -1,0 +1,48 @@
+.view-radio-shows{
+  padding: 0 1em;
+  .view-content {
+    .labels {
+      display: flex;
+      button {
+        border-radius: 0;
+        border: dashed 1px $color-lilac;
+        flex-basis: calc(100% / 7);
+        padding:0.8rem 0;
+        text-transform: uppercase;
+        .field--type-string {
+          display:inline-block;
+          width:35px;
+          overflow: hidden;
+          padding: 0 0.5em;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          @include media-phone-landscape {
+            width:100%;
+          }
+        }
+        &.selected {
+          background-color: $color-lilac;
+          color: $color-white;
+        }
+      }
+    }
+    .sections {
+      width:100%;
+      .views-field-name {
+        display: none;
+      }
+      section{
+        display: none;
+        &.selected{
+          display:block;
+        }
+      }
+    }
+    .view-row{
+      // display: flex;
+    }
+  }
+  @include media-desktop {
+    padding: initial;
+  }
+}
