@@ -1,3 +1,4 @@
-
+/db_backups
+/db_backups/*
 /sites/default/files
 /sites/default/files/*
