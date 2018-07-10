@@ -5202,8 +5202,8 @@ nav.menu--footer ul li.fa-container a.fa:before {
 
 @media screen and (min-width: 1024px) {
   nav.menu--footer ul li {
-    -ms-flex-preferred-size: 24%;
-        flex-basis: 24%;
+    -ms-flex-preferred-size: 45%;
+        flex-basis: 45%;
   }
   nav.menu--footer ul li.fa-container {
     padding: 1rem 0.5rem;
@@ -5279,6 +5279,8 @@ nav.menu--social-menu {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  z-index: 99;
+  background-color: #c80028;
   /*margin-bottom: 1em;*/
   /*padding: 0 1rem;*/
 }
@@ -5367,6 +5369,23 @@ nav.menu--main ul li a {
       align-self: center;
   text-align: center;
   width: 100%;
+}
+
+nav.menu--main ul li.color-red {
+  background-color: #ff0028;
+}
+
+nav.menu--main ul li.color-red a {
+  color: #FFF;
+}
+
+nav.menu--main ul li.color-red:hover, nav.menu--main ul li.color-red.menu-item--active-trail {
+  background-color: #FFF;
+}
+
+nav.menu--main ul li.color-red:hover a, nav.menu--main ul li.color-red.menu-item--active-trail a {
+  font-weight: bold;
+  color: #ff0028;
 }
 
 nav.menu--main ul li.color-orange {
@@ -5568,6 +5587,7 @@ article.node--type-article.node--view-mode-full .node__content img:first-child {
   display: inline-block;
   float: left;
   margin: 0 1em 1em 0;
+  max-width: 100%;
 }
 
 article.node--type-article .node__content {

@@ -187,7 +187,7 @@
       $('body .page-content > .container').append('<div class="share-buttons"></div>');
       self.domEl.container = $('body .page-content > .container .share-buttons');
 
-      var networksIds = [{ name: 'Me gusta', icon: 'facebook' }, { name: 'Twittear', icon: 'twitter' }, { name: '+1', icon: 'google'
+      var networksIds = [{ name: 'Compartir', icon: 'facebook' }, { name: 'Twittear', icon: 'twitter' }, { name: '+1', icon: 'google'
         // {name: 'LinkedIn', icon: 'linkedin'}
       }];
       $.each(networksIds, function (index) {

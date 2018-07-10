@@ -18,7 +18,7 @@
       self.domEl.container = $('body .page-content > .container .share-buttons');
 
       var networksIds = [
-        {name: 'Me gusta', icon: 'facebook'},
+        {name: 'Compartir', icon: 'facebook'},
         {name: 'Twittear', icon: 'twitter'},
         {name: '+1', icon: 'google'}
         // {name: 'LinkedIn', icon: 'linkedin'}

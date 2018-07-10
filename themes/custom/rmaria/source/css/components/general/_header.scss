@@ -46,6 +46,8 @@ header{
 nav.menu--social-menu{
   display: flex;
   justify-content: flex-start;
+  z-index: 99;
+  background-color: #c80028;
   /*margin-bottom: 1em;*/
   /*padding: 0 1rem;*/
   > * {
@@ -107,6 +109,19 @@ nav.menu--main{
         text-align: center;
         width: 100%;
       }
+      &.color-red{
+	background-color: $color-red;
+	a{
+		color: $color-white;
+	}
+	&:hover, &.menu-item--active-trail {
+		background-color: $color-white;
+		a{
+			font-weight: bold;
+			color: $color-red;
+			}
+		}
+	}
       &.color-orange{
         background-color: $color-orange;
         &:hover, &.menu-item--active-trail {
