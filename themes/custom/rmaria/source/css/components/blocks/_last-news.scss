@@ -7,3 +7,27 @@
     // text-transform: uppercase;
   }
 }
+@media screen and (max-width: 668px) {
+  .block-views-blocklast-news-last-news{
+    //flex-basis: 667px;
+  }
+  .block-views-blocklast-news-last-news h2{
+    //width: 100%;
+  }
+  .block-views-blocklast-news-last-news div.contextual{
+    //width: 100%;
+  }
+
+  .block-views-blocklast-news-last-news div.view-display-id-last_news {
+    //width: 100%;
+  }
+
+  article.node--type-article.node--view-mode-teaser > div.left {
+    //flex-basis: unset;
+  }
+
+  article.node--type-article.node--view-mode-teaser > div.right {
+    //flex-basis: unset;
+  }
+
+}

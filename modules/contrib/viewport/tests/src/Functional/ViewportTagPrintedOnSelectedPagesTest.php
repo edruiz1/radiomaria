@@ -44,7 +44,7 @@ class ViewportTagPrintedOnSelectedPagesTest extends BrowserTestBase {
     $edit = array();
     $edit['width'] = '980';
     $edit['height'] = '1000';
-    $edit['initial_scale'] = '1.0';
+    $edit['initial_scale'] = '1.3';
     $edit['minimum_scale'] = '0.25';
     $edit['maximum_scale'] = '5.0';
     $edit['user_scalable'] = TRUE;
@@ -59,7 +59,7 @@ class ViewportTagPrintedOnSelectedPagesTest extends BrowserTestBase {
     $this->drupalGet('/node/');
 
     // Assert viewport tag is present with the right values.
-    $custom_viewport = 'meta name="viewport" content="width=980, height=1000, initial-scale=1.0, minimum-scale=0.25, maximum-scale=5.0, user-scalable=yes"';
+    $custom_viewport = 'meta name="viewport" content="width=980, height=1000, initial-scale=1.3, minimum-scale=0.25, maximum-scale=5, user-scalable=yes"';
     $this->assertSession()->responseContains($custom_viewport);
   }
 
@@ -74,7 +74,7 @@ class ViewportTagPrintedOnSelectedPagesTest extends BrowserTestBase {
     $edit = array();
     $edit['width'] = '980';
     $edit['height'] = '1000';
-    $edit['initial_scale'] = '1.0';
+    $edit['initial_scale'] = '1.3';
     $edit['minimum_scale'] = '0.25';
     $edit['maximum_scale'] = '5.0';
     $edit['user_scalable'] = TRUE;
@@ -89,7 +89,7 @@ class ViewportTagPrintedOnSelectedPagesTest extends BrowserTestBase {
     $this->drupalGet('admin');
     $core_viewport = 'meta name="viewport" content="width=device-width, initial-scale=1.0"';
     $this->assertSession()->responseContains($core_viewport);
-    $custom_viewport = 'meta name="viewport" content="width=980, height=1000, initial-scale=1.0, minimum-scale=0.25, maximum-scale=5.0, user-scalable=yes"';
+    $custom_viewport = 'meta name="viewport" content="width=980, height=1000, initial-scale=1.3, minimum-scale=0.25, maximum-scale=5, user-scalable=yes"';
     $this->assertSession()->responseNotContains($custom_viewport);
   }
 

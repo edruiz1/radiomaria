@@ -5,6 +5,7 @@ namespace Drupal\webform\Element;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
+use Drupal\webform\Utility\WebformAccessibilityHelper;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 
@@ -28,9 +29,10 @@ class WebformLikert extends FormElement {
       ],
       '#theme_wrappers' => ['form_element'],
       '#required' => FALSE,
+      '#sticky' => TRUE,
       '#questions' => [],
       '#questions_description_display' => 'description',
-      // Using #answers insteads of #options to prevent triggering
+      // Using #answers instead of #options to prevent triggering
       // \Drupal\Core\Form\FormValidator::performRequiredValidation().
       '#answers' => [],
       '#answers_description_display' => 'description',
@@ -61,7 +63,7 @@ class WebformLikert extends FormElement {
         list($answer_title, $answer_description) = explode(WebformOptionsHelper::DESCRIPTION_DELIMITER, $answer);
       }
       $answers[$answer_key] = [
-        'description_property_name' => $answer_description_property_name ,
+        'description_property_name' => $answer_description_property_name,
         'title' => $answer_title,
         'description' => $answer_description,
       ];
@@ -69,7 +71,11 @@ class WebformLikert extends FormElement {
 
     // Build header.
     $header = [
-      'likert_question' => ['question' => FALSE],
+      'likert_question' => [
+        'data' => [
+          'title' => WebformAccessibilityHelper::buildVisuallyHidden(t('Questions')),
+        ],
+      ],
     ];
     foreach ($answers as $answer_key => $answer) {
       $header[$answer_key] = [
@@ -82,6 +88,7 @@ class WebformLikert extends FormElement {
           $header[$answer_key]['data']['help'] = [
             '#type' => 'webform_help',
             '#help' => $answer['description'],
+            '#help_title' => $answer['title'],
           ];
           break;
 
@@ -124,6 +131,7 @@ class WebformLikert extends FormElement {
         // Must include an empty <span> so that the item's value is
         // not required.
         '#value' => '<span></span>',
+        '#webform_element' => TRUE,
         '#required' => $element['#required'],
       ];
       if ($question_description_property_name) {
@@ -131,18 +139,24 @@ class WebformLikert extends FormElement {
       }
 
       foreach ($answers as $answer_key => $answer) {
-
         $row[$answer_key] = [
           '#parents' => [$element['#name'], $question_key],
           '#type' => 'radio',
           // Must cast values as strings to prevent NULL and empty strings.
           // from being evaluated as 0.
           '#return_value' => (string) $answer_key,
-          '#value' => (string) $value,
+          // Set value to FALSE to prevent '0' or '' from being checked when
+          // value is NULL.
+          // @see \Drupal\Core\Render\Element\Radio::preRenderRadio
+          '#value' => ($value === NULL) ? FALSE : (string) $value,
         ];
 
-        // Wrap title in span.webform-likert-label so that it can hidden when
-        // Likert is displayed in grid on desktop.
+        // Wrap title in span.webform-likert-label.visually-hidden
+        // so that it can hidden but accessible to screen readers
+        // when Likert is displayed in grid on desktop.
+        // Wrap help and description in
+        // span.webform-likert-(help|description).hidden to block screen
+        // readers except on mobile.
         // @see webform.element.likert.css
         $row[$answer_key]['#title_display'] = 'after';
 
@@ -153,8 +167,11 @@ class WebformLikert extends FormElement {
               'help' => [
                 '#type' => 'webform_help',
                 '#help' => $answer['description'],
+                '#help_title' => $answer['title'],
+                '#prefix' => '<span class="webform-likert-help hidden">',
+                '#suffix' => '</span>',
               ],
-              '#prefix' => '<span class="webform-likert-label">',
+              '#prefix' => '<span class="webform-likert-label visually-hidden">',
               '#suffix' => '</span>',
             ];
             $row[$answer_key]['#title'] = \Drupal::service('renderer')->render($build);
@@ -162,14 +179,14 @@ class WebformLikert extends FormElement {
 
           case 'description':
             $row[$answer_key] += [
-              '#title' => new FormattableMarkup('<span class="webform-likert-label">@title</span>', ['@title' => $answer['title']]),
-              '#description' => new FormattableMarkup('<span class="webform-likert-description">@description</span>', ['@description' => $answer['description']]),
+              '#title' => new FormattableMarkup('<span class="webform-likert-label visually-hidden">@title</span>', ['@title' => $answer['title']]),
+              '#description' => new FormattableMarkup('<span class="webform-likert-description hidden">@description</span>', ['@description' => $answer['description']]),
             ];
             break;
 
           default:
             $row[$answer_key] += [
-              '#title' => new FormattableMarkup('<span class="webform-likert-label">@title</span>', ['@title' => $answer['title']]),
+              '#title' => new FormattableMarkup('<span class="webform-likert-label visually-hidden">@title</span>', ['@title' => $answer['title']]),
             ];
         }
       }
@@ -179,10 +196,13 @@ class WebformLikert extends FormElement {
     $element['table'] = [
       '#type' => 'table',
       '#header' => $header,
+      '#sticky' => $element['#sticky'],
       '#attributes' => [
         'class' => ['webform-likert-table'],
         'data-likert-answers-count' => count($element['#answers']),
       ],
+      '#prefix' => '<div class="webform-likert-table-wrapper">',
+      '#suffix' => '</div>',
     ] + $rows;
 
     // Build table element with selected properties.
@@ -193,7 +213,11 @@ class WebformLikert extends FormElement {
     $element['table'] += array_intersect_key($element, array_combine($properties, $properties));
 
     $element['#tree'] = TRUE;
-    $element['#element_validate'] = [[get_called_class(), 'validateWebformLikert']];
+
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformLikert']);
+
     $element['#attached']['library'][] = 'webform/webform.element.likert';
 
     return $element;
@@ -253,6 +277,7 @@ class WebformLikert extends FormElement {
       }
     }
 
+    $element['#value'] = $value;
     $form_state->setValueForElement($element, $value);
   }
 

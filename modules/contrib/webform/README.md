@@ -26,7 +26,7 @@ The primary use case for this module is to:
 
 > [Watch a demo](http://youtu.be/sQGsfQ_LZJ4) of the Webform module.
 
-> Evaluate this project online using [simplytest.me](https://simplytest.me/project/webform/8.x-5.x?add[]=contribute).
+> Evaluate this project online using [simplytest.me](https://simplytest.me/project/webform/8.x-5.x).
 
 
 ### Installing the Webform Module
@@ -67,7 +67,7 @@ between releases.  **APIs can and will be changing** while this module moves
 from beta releases to a final release candidate. 
 
 Simply put, if you install and use the Webform module out of the box AS-IS, 
-you _should_ be okay.  Once you start extending webforms with plugins, altering 
+you _should_ be okay. Once you start extending webforms with plugins, altering 
 hooks, and overriding templates, you will need to read each release's 
 notes and assume that _things will be changing_.
 

@@ -4,6 +4,8 @@ namespace Drupal\webform\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Routing\RedirectDestinationInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Response subscriber to redirect to login when access is denied to a file, webform, or submission.
+ * Event subscriber to redirect to login form when webform settings instruct to.
  */
 class WebformSubscriber implements EventSubscriberInterface {
 
@@ -48,11 +50,25 @@ class WebformSubscriber implements EventSubscriberInterface {
   protected $renderer;
 
   /**
+   * The redirect.destination service.
+   *
+   * @var \Drupal\Core\Routing\RedirectDestinationInterface
+   */
+  protected $redirectDestination;
+
+  /**
    * The webform token manager.
    *
    * @var \Drupal\webform\WebformTokenManagerInterface
    */
   protected $tokenManager;
+
+  /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
 
   /**
    * Constructs a new WebformSubscriber.
@@ -63,19 +79,24 @@ class WebformSubscriber implements EventSubscriberInterface {
    *   The configuration object factory.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
+   * @param \Drupal\Core\Routing\RedirectDestinationInterface $redirect_destination
+   *   The redirect.destination service.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
    */
-  public function __construct(AccountInterface $account, ConfigFactoryInterface $config_factory, RendererInterface $renderer, WebformTokenManagerInterface $token_manager) {
+  public function __construct(AccountInterface $account, ConfigFactoryInterface $config_factory, RendererInterface $renderer, MessengerInterface $messenger, RedirectDestinationInterface $redirect_destination, WebformTokenManagerInterface $token_manager) {
     $this->account = $account;
     $this->configFactory = $config_factory;
     $this->renderer = $renderer;
-
+    $this->messenger = $messenger;
+    $this->redirectDestination = $redirect_destination;
     $this->tokenManager = $token_manager;
   }
 
   /**
-   * Redirect to user login when access is denied to private webform file uploads.
+   * Redirect to user login when access is denied to private webform file.
    *
    * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The event to process.
@@ -181,19 +202,17 @@ class WebformSubscriber implements EventSubscriberInterface {
    *   (Optional) Entity to be used when replacing tokens.
    */
   protected function redirectToLogin(FilterResponseEvent $event, $message = NULL, EntityInterface $entity = NULL) {
-    $path = $event->getRequest()->getPathInfo();
-
     // Display message.
     if ($message) {
       $message = $this->tokenManager->replace($message, $entity);
       $build = WebformHtmlEditor::checkMarkup($message);
-      drupal_set_message($this->renderer->renderPlain($build));
+      $this->messenger->addStatus($this->renderer->renderPlain($build));
     }
 
     $redirect_url = Url::fromRoute(
       'user.login',
       [],
-      ['absolute' => TRUE, 'query' => ['destination' => ltrim($path, '/')]]
+      ['absolute' => TRUE, 'query' => $this->redirectDestination->getAsArray()]
     );
     $event->setResponse(new RedirectResponse($redirect_url->toString()));
   }

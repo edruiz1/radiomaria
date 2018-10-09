@@ -37,47 +37,47 @@ class ViewportSettingsForm extends ConfigFormBase {
 
     $form['viewport']['width'] = array(
       '#type' => 'textfield',
-      '#title' => t('Width'),
+      '#title' => $this->t('Width'),
       '#default_value' => $viewportSettings->get('width'),
-      '#description' => t('You probably want this to be %device-width, but a fixed number of pixels (only the number) is accepted too.',
+      '#description' => $this->t('You probably want this to be %device-width, but a fixed number of pixels (only the number) is accepted too.',
         array('%device-width' => 'device-width')),
     );
     $form['viewport']['height'] = array(
       '#type' => 'textfield',
-      '#title' => t('Height'),
+      '#title' => $this->t('Height'),
       '#default_value' => $viewportSettings->get('height'),
-      '#description' => t('%device-height, or a fixed number of pixels (only the number).',
+      '#description' => $this->t('%device-height, or a fixed number of pixels (only the number).',
         array('%device-height' => 'device-height')),
     );
     $form['viewport']['initial_scale'] = array(
       '#type' => 'textfield',
-      '#title' => t('Initial Scale'),
+      '#title' => $this->t('Initial Scale'),
       '#default_value' => $viewportSettings->get('initial_scale'),
-      '#description' => t('Any value in the range (0, 10.0]. Usually this is set to 1.0'),
+      '#description' => $this->t('Any value in the range (0, 10.0]. Usually this is set to 1.0'),
     );
     $form['viewport']['minimum_scale'] = array(
       '#type' => 'textfield',
-      '#title' => t('Minimum Scale'),
+      '#title' => $this->t('Minimum Scale'),
       '#default_value' => $viewportSettings->get('minimum_scale'),
-      '#description' => t('Any value in the range (0, 10.0]. Usually this is set to the same value as the %initial-scale property',
+      '#description' => $this->t('Any value in the range (0, 10.0]. Usually this is set to the same value as the %initial-scale property',
         array('%initial-scale' => 'initial-scale')),
     );
     $form['viewport']['maximum_scale'] = array(
       '#type' => 'textfield',
-      '#title' => t('Maximum Scale'),
+      '#title' => $this->t('Maximum Scale'),
       '#default_value' => $viewportSettings->get('maximum_scale'),
-      '#description' => t('Any value in the range (0, 10.0]. Usually this is set to 1.0'),
+      '#description' => $this->t('Any value in the range (0, 10.0]. Usually this is set to 1.0'),
     );
     $form['viewport']['user_scalable'] = array(
       '#type' => 'checkbox',
-      '#title' => t('User Scalable'),
+      '#title' => $this->t('User Scalable'),
       '#default_value' => $viewportSettings->get('user_scalable'),
     );
     $form['viewport']['selected_pages'] = array(
       '#type' => 'textarea',
-      '#title' => t('Selected pages'),
+      '#title' => $this->t('Selected pages'),
       '#default_value' => $viewportSettings->get('selected_pages'),
-      '#description' => t("The viewport settings will be applied to the following paths. <br/>
+      '#description' => $this->t("The viewport settings will be applied to the following paths. <br/>
         Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard.
         Example paths are %node for the first node of the site and %node-wildcard for every node.
         %front is the front page.<br>
@@ -103,7 +103,7 @@ class ViewportSettingsForm extends ConfigFormBase {
       // User_scalable is a checkbox, no need to check for commas.
       if (in_array($key, Element::children($form['viewport'])) && $key != 'user_scalable') {
         if (strstr($value, ',')) {
-          $form_state->setErrorByName($key, t('Commas are not allowed for the %field_name field.
+          $form_state->setErrorByName($key, $this->t('Commas are not allowed for the %field_name field.
             Please, ensure you are using dots (".") when entering decimal values,
             and avoid any commas after the values', array(
               '%field_name' => $form['viewport'][$key]['#title'],

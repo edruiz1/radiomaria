@@ -2,13 +2,21 @@
     "name": "drupal/drupal",
     "description": "Drupal is an open source content management platform powering millions of websites and applications.",
     "type": "project",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "require": {
         "composer/installers": "^1.0.24",
-        "wikimedia/composer-merge-plugin": "^1.4"
+        "wikimedia/composer-merge-plugin": "^1.4",
+        "drupal/address": "~1.0"
     },
     "replace": {
-        "drupal/core": "^8.4"
+        "drupal/core": "^8.5",
+        "drupal/commerce": "8.*",
+        "drupal/markdown": "8.*",
+        "drupal/metatag": "8.*",
+        "drupal/paragraphs": "8.*",
+        "drupal/rules": "8.*",
+        "drupal/slick": "8.*",
+        "drupal/webform": "8.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -26,34 +34,62 @@
         ],
         "merge-plugin": {
             "include": [
-                "core/composer.json"
+                "core/composer.json",
+                "modules/contrib/address/composer.json",
+                "modules/contrib/commerce/composer.json",
+                "modules/contrib/entity/composer.json",
+                "modules/contrib/markdown/composer.json",
+                "modules/contrib/metatag/composer.json",
+                "modules/contrib/paragraphs/composer.json",
+                "modules/contrib/rules/composer.json",
+                "modules/contrib/slick/composer.json",
+                "modules/contrib/webform/composer.json"
             ],
-            "recurse": false,
+            "recurse": true,
             "replace": false,
             "merge-extra": false
         },
         "installer-paths": {
-            "core": ["type:drupal-core"],
-            "modules/contrib/{$name}": ["type:drupal-module"],
-            "profiles/contrib/{$name}": ["type:drupal-profile"],
-            "themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
-            "modules/custom/{$name}": ["type:drupal-custom-module"],
-            "themes/custom/{$name}": ["type:drupal-custom-theme"]
+            "core": [
+                "type:drupal-core"
+            ],
+            "modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/contrib/{$name}": [
+                "type:drupal-drush"
+            ],
+            "modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ]
         }
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer"
+            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer",
+            "Drupal\\composer_manager\\Composer\\": "modules/contrib/composer_manager/src/Composer"
         }
     },
     "scripts": {
         "pre-autoload-dump": "Drupal\\Core\\Composer\\Composer::preAutoloadDump",
-        "post-autoload-dump": [
-          "Drupal\\Core\\Composer\\Composer::ensureHtaccess"
-        ],
+        "post-autoload-dump": "Drupal\\Core\\Composer\\Composer::ensureHtaccess",
         "post-package-install": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
-        "post-package-update": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup"
+        "post-package-update": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
+        "drupal-phpunit-upgrade-check": "Drupal\\Core\\Composer\\Composer::upgradePHPUnit",
+        "drupal-phpunit-upgrade": "@composer update phpunit/phpunit --with-dependencies --no-progress",
+        "phpcs": "phpcs --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+        "phpcbf": "phpcbf --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+        "drupal-rebuild": "Drupal\\composer_manager\\Composer\\Command::rebuild",
+        "drupal-update": "Drupal\\composer_manager\\Composer\\Command::update"
     },
     "repositories": [
         {

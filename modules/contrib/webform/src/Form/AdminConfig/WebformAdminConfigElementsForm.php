@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Form\AdminConfig;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -10,8 +9,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\WebformLibrariesManagerInterface;
+use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,6 +26,13 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;
+
+  /**
+   * The webform token manager.
+   *
+   * @var \Drupal\webform\WebformTokenManagerInterface
+   */
+  protected $tokenManager;
 
   /**
    * The webform element manager.
@@ -54,14 +62,17 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
    *   The factory for configuration objects.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
+   *   The webform token manager.
    * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
    *   The webform element manager.
    * @param \Drupal\webform\WebformLibrariesManagerInterface $libraries_manager
    *   The webform libraries manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, WebformElementManagerInterface $element_manager, WebformLibrariesManagerInterface $libraries_manager) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, WebformTokenManagerInterface $token_manager, WebformElementManagerInterface $element_manager, WebformLibrariesManagerInterface $libraries_manager) {
     parent::__construct($config_factory);
     $this->moduleHandler = $module_handler;
+    $this->tokenManager = $token_manager;
     $this->elementManager = $element_manager;
     $this->librariesManager = $libraries_manager;
   }
@@ -73,6 +84,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     return new static(
       $container->get('config.factory'),
       $container->get('module_handler'),
+      $container->get('webform.token_manager'),
       $container->get('plugin.manager.webform.element'),
       $container->get('webform.libraries_manager')
     );
@@ -101,7 +113,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       '#type' => 'webform_radios_other',
       '#title' => $this->t('Allowed tags'),
       '#options' => [
-        'admin' => $this->t('Admin tags Excludes: script, iframe, etc...'),
+        'admin' => $this->t('Admin tags Excludes: script, iframe, etc…'),
         'html' => $this->t('HTML tags: Includes only @html_tags.', ['@html_tags' => WebformArrayHelper::toString(Xss::getHtmlTagList())]),
       ],
       '#other__option_label' => $this->t('Custom tags'),
@@ -137,7 +149,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['element']['default_description_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Default description display'),
-      '#empty_option' => $this->t('- Default - '),
+      '#empty_option' => $this->t('- Default -'),
       '#options' => [
         'before' => $this->t('Before'),
         'after' => $this->t('After'),
@@ -150,7 +162,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['element']['default_more_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Default more label'),
-      '#description' => $this->t('The (read) more label used hide/show more information about an element.'),
+      '#description' => $this->t('The (read) more label used to hide/show more information about an element.'),
       '#required' => 'required',
       '#default_value' => $config->get('element.default_more_title'),
     ];
@@ -182,7 +194,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       '#type' => 'select',
       '#title' => $this->t('Enhance checkboxes/radio buttons using iCheck'),
       '#description' => $this->t('If set, all checkboxes/radio buttons with be enhanced using jQuery <a href=":href">iCheck</a> boxes.', [':href' => 'http://icheck.fronteed.com/']),
-      '#empty_option' => $this->t('- Default - '),
+      '#empty_option' => $this->t('- Default -'),
       '#options' => [
         (string) $this->t('Minimal') => [
           'minimal' => $this->t('Minimal: Black'),
@@ -252,13 +264,26 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
         $format_options[$filter->id()] = $filter->label();
       }
     }
-    $form['html_editor']['format'] = [
+    $form['html_editor']['element_format'] = [
       '#type' => 'select',
-      '#title' => $this->t('Text format'),
+      '#title' => $this->t('Element text format'),
       '#description' => $this->t('Leave blank to use the custom and recommended Webform specific HTML editor.'),
       '#empty_option' => $this->t('- None -'),
       '#options' => $format_options,
-      '#default_value' => $config->get('html_editor.format'),
+      '#default_value' => $config->get('html_editor.element_format'),
+      '#states' => [
+        'visible' => [
+          ':input[name="html_editor[disabled]"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+    $form['html_editor']['mail_format'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Mail text format'),
+      '#description' => $this->t('Leave blank to use the custom and recommended Webform specific HTML editor.'),
+      '#empty_option' => $this->t('- None -'),
+      '#options' => $format_options,
+      '#default_value' => $config->get('html_editor.mail_format'),
       '#states' => [
         'visible' => [
           ':input[name="html_editor[disabled]"]' => ['checked' => FALSE],
@@ -272,7 +297,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['html_editor']['message'] = [
       '#type' => 'webform_message',
       '#message_message' => $this->t('Text formats that open CKEditor image and/or link dialogs will not work properly.') . '<br />' .
-        $this->t('You may need to <a href=":dialog_href">disable dialogs</a> or enable the experimental <a href=":modules_href">Settings Tray</a> module.', $t_args) . '<br />' .
+        $this->t('You may need to <a href=":dialog_href">disable dialogs</a>.', $t_args) . '<br />' .
         $this->t('For more information see: <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>'),
       '#message_type' => 'warning',
       '#states' => [
@@ -333,6 +358,20 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       '#open' => TRUE,
       '#tree' => TRUE,
     ];
+    $form['file']['make_unused_managed_files_temporary'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Unused webform submission files should be marked temporary'),
+      '#description' => $this->t('Drupal core does not automatically delete unused files because unused files could reused. For webform submissions it is recommended that unused files are deleted.'),
+      '#return_value' => TRUE,
+      '#default_value' => $config->get('file.make_unused_managed_files_temporary'),
+    ];
+    $form['file']['delete_temporary_managed_files'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Immediately delete temporary managed files'),
+      '#description' => $this->t('Drupal core does not immediately delete temporary file. For webform submissions it is recommended that temporary files are immediately deleted.'),
+      '#return_value' => TRUE,
+      '#default_value' => $config->get('file.delete_temporary_managed_files'),
+    ];
     $form['file']['file_public'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Allow files to be uploaded to public file system'),
@@ -359,11 +398,12 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
         ],
       ],
     ];
-
     $form['file']['default_max_filesize'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Default maximum upload size'),
-      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', ['%limit' => function_exists('file_upload_max_size') ? format_size(file_upload_max_size()) : $this->t('N/A')]),
+      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes.')
+        . '<br /><br />'
+        . $this->t('Current limit: %limit', ['%limit' => function_exists('file_upload_max_size') ? format_size(file_upload_max_size()) : $this->t('N/A')]),
       '#element_validate' => [[get_class($this), 'validateMaxFilesize']],
       '#size' => 10,
       '#default_value' => $config->get('file.default_max_filesize'),
@@ -386,6 +426,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
         '#default_value' => $config->get("file.default_{$file_type_name}_extensions"),
       ];
     }
+    $form['file']['token_tree_link'] = $this->tokenManager->buildTreeElement();
 
     // Element: (Excluded) Types.
     $form['types'] = [
@@ -400,6 +441,29 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['types']['excluded_elements']['#header']['title']['width'] = '25%';
     $form['types']['excluded_elements']['#header']['id']['width'] = '25%';
     $form['types']['excluded_elements']['#header']['description']['width'] = '50%';
+    // Add warning to all password elements.
+    foreach ($form['types']['excluded_elements']['#options'] as $element_type => &$excluded_element_option) {
+      if (strpos($element_type, 'password') !== FALSE) {
+        $excluded_element_option['description'] = [
+          'data' => [
+            'description' => ['#markup' => $excluded_element_option['description']],
+            'message' => [
+              '#type' => 'webform_message',
+              '#message_type' => 'warning',
+              '#message_message' => $this->t('Webform submissions store passwords as plain text.') . ' ' .
+                $this->t('Any webform that includes this element should enable <a href=":href">encryption</a>.', [':href' => 'https://www.drupal.org/project/webform_encrypt']),
+              '#attributes' => ['class' => ['js-form-wrapper']],
+              '#states' => [
+                'visible' => [
+                  ':input[name="excluded_elements[' . $element_type . ']"]' => ['checked' => TRUE],
+                ],
+              ],
+            ],
+          ],
+        ];
+
+      }
+    }
 
     // Element: Format.
     $form['format'] = [
@@ -427,19 +491,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       $row['id'] = ['#markup' => $element_id];
 
       // Item format.
-      $item_formats = $element_plugin->getItemFormats();
-      foreach ($item_formats as $format_name => $format_label) {
-        if (is_array($format_label)) {
-          // Support optgroup.
-          // @see \Drupal\webform\Plugin\WebformElement\WebformImageFile::getItemFormats.
-          foreach ($format_label as $format_label_value => $format_label_text) {
-            $item_formats[$format_name][$format_label_value] = new FormattableMarkup('@label (@name)', ['@label' => $format_label_text, '@name' => $format_label_value]);
-          }
-        }
-        else {
-          $item_formats[$format_name] = new FormattableMarkup('@label (@name)', ['@label' => $format_label, '@name' => $format_name]);
-        }
-      }
+      $item_formats = WebformOptionsHelper::appendValueToText($element_plugin->getItemFormats());
       $item_default_format = $element_plugin->getItemDefaultFormat();
       $item_default_format_label = (isset($item_formats[$item_default_format])) ? $item_formats[$item_default_format] : $item_default_format;
       $row['item'] = [
@@ -459,10 +511,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
 
       // Items format.
       if ($element_plugin->supportsMultipleValues()) {
-        $items_formats = $element_plugin->getItemsFormats();
-        foreach ($items_formats as $format_name => $format_label) {
-          $items_formats[$format_name] = new FormattableMarkup('@label (@name)', ['@label' => $format_label, '@name' => $format_name]);
-        }
+        $items_formats = WebformOptionsHelper::appendValueToText($element_plugin->getItemsFormats());
         $items_default_format = $element_plugin->getItemsDefaultFormat();
         $items_default_format_label = (isset($item_formats[$items_default_format])) ? $items_formats[$items_default_format] : $items_default_format;
         $row['items'] = [
@@ -470,7 +519,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
           '#title' => $this->t('Items format'),
           '#title_display' => 'invisible',
           '#field_suffix' => [
-            '#type' => 'webform_help',
+            '#help_title' => $element_plugin_label,
             '#help' => $this->t('Defaults to: %value', ['%value' => $items_default_format_label]),
           ],
           '#empty_option' => $this->t('- Default -'),
@@ -494,6 +543,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
         'item' => ['data' => $this->t('Item format'), 'width' => '25%'],
         'items' => ['data' => $this->t('Items format'), 'width' => '25%'],
       ],
+      '#sticky' => TRUE,
     ] + $rows;
 
     return parent::buildForm($form, $form_state);

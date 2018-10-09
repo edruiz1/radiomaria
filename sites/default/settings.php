@@ -775,3 +775,13 @@ $databases['default']['default'] = array (
 );
 $settings['install_profile'] = 'standard';
 $config_directories['sync'] = 'sites/default/files/config_oDpClChPSJqr40dkPe0tIk9EHEJBlXyEtZ7BoVYcf_Aw6l8J_50wUDtuslCuzuOzIhNNC0mtZA/sync';
+
+#Trusted host patterns
+$settings['trusted_host_patterns'] = [
+	'^radiomariacol\.org$',
+        '^www\.radiomariacol\.org$',
+        '^104\.131\.61\.114$',
+        '^localhost$',
+        '^127\.0\.0\.1$',
+];
+

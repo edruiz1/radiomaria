@@ -128,7 +128,6 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#description' => $this->t('If checked, all off-canvas system trays will be disabled.'),
       '#return_value' => TRUE,
       '#default_value' => $config->get('ui.offcanvas_disabled'),
-      '#access' => (floatval(\Drupal::VERSION) >= 8.5),
       '#states' => [
         'visible' => [
           ':input[name="ui[dialog_disabled]"]' => [
@@ -136,13 +135,6 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
           ],
         ],
       ],
-    ];
-    $form['ui']['about_disabled'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t("Disable the 'About' section"),
-      '#description' => $this->t("If checked, 'About' section/tab will be remove from the admin UI."),
-      '#return_value' => TRUE,
-      '#default_value' => $config->get('ui.about_disabled'),
     ];
     $form['ui']['promotions_disabled'] = [
       '#type' => 'checkbox',
@@ -152,6 +144,13 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
         $this->t('Note: Promotions are only visible to users who can <em>administer modules</em>.'),
       '#return_value' => TRUE,
       '#default_value' => $config->get('ui.promotions_disabled'),
+    ];
+    $form['ui']['contribute_disabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t("Disable 'Contribute' section"),
+      '#description' => $this->t("If checked, 'Contribute' section/tab will be removed from the admin UI."),
+      '#return_value' => TRUE,
+      '#default_value' => $config->get('ui.contribute_disabled'),
     ];
 
     // Requirements.
@@ -219,6 +218,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_export_size'),
+      '#description' => $this->t('Batch export size is used when submissions are being exported/downloaded.'),
     ];
     $form['batch']['default_batch_update_size'] = [
       '#type' => 'number',
@@ -226,10 +226,12 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_update_size'),
+      '#description' => $this->t('Batch update size is used when submissions are being bulk updated.'),
     ];
     $form['batch']['default_batch_delete_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Batch delete size'),
+      '#description' => $this->t('Batch delete size is used when submissions are being cleared.'),
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_delete_size'),
@@ -260,7 +262,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
     // Clear render cache so that local tasks can be updated.
     // @see webform_local_tasks_alter()
     $this->renderCache->deleteAll();
-    \Drupal::service('router.builder')->rebuild();
+    $this->routerBuilder->rebuild();
 
     parent::submitForm($form, $form_state);
   }

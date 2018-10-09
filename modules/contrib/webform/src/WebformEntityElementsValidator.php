@@ -84,9 +84,21 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
    */
   protected $formBuilder;
 
-  public function __construct(RendererInterface $renderer, WebformElementManagerInterface $webform_element_manager, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder) {
+  /**
+   * Constructs a WebformEntityElementsValidator object.
+   *
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The 'renderer' service.
+   * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
+   *   The 'plugin.manager.webform.element' service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The 'entity_type.manager' service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   The 'form_builder' service.
+   */
+  public function __construct(RendererInterface $renderer, WebformElementManagerInterface $element_manager, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder) {
     $this->renderer = $renderer;
-    $this->elementManager = $webform_element_manager;
+    $this->elementManager = $element_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->formBuilder = $form_builder;
   }
@@ -94,18 +106,30 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
   /**
    * {@inheritdoc}
    */
-  public function validate(WebformInterface $webform) {
+  public function validate(WebformInterface $webform, array $options = []) {
+    $options += [
+      'required' => TRUE,
+      'yaml' => TRUE,
+      'array' => TRUE,
+      'names' => TRUE,
+      'properties' => TRUE,
+      'submissions' => TRUE,
+      'hierarchy' => TRUE,
+      'rendering' => TRUE,
+    ];
+
     $this->webform = $webform;
 
     $this->elementsRaw = $webform->getElementsRaw();
     $this->originalElementsRaw = $webform->getElementsOriginalRaw();
 
     // Validate required.
-    if ($message = $this->validateRequired()) {
+    if ($options['required'] && ($message = $this->validateRequired())) {
       return [$message];
     }
+
     // Validate contain valid YAML.
-    if ($message = $this->validateYaml()) {
+    if ($options['yaml'] && ($message = $this->validateYaml())) {
       return [$message];
     }
 
@@ -113,32 +137,32 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
     $this->originalElements = Yaml::decode($this->originalElementsRaw);
 
     // Validate elements are an array.
-    if ($message = $this->validateArray()) {
+    if ($options['array'] && ($message = $this->validateArray())) {
       return [$message];
     }
 
     // Validate duplicate element name.
-    if ($messages = $this->validateDuplicateNames()) {
+    if ($options['names'] && ($messages = $this->validateDuplicateNames())) {
       return $messages;
     }
 
     // Validate ignored properties.
-    if ($messages = $this->validateProperties()) {
+    if ($options['properties'] && ($messages = $this->validateProperties())) {
       return $messages;
     }
 
     // Validate submission data.
-    if ($messages = $this->validateSubmissions()) {
+    if ($options['submissions'] && ($messages = $this->validateSubmissions())) {
       return $messages;
     }
 
     // Validate hierarchy.
-    if ($messages = $this->validateHierarchy()) {
+    if ($options['hierarchy'] && ($messages = $this->validateHierarchy())) {
       return $messages;
     }
 
     // Validate rendering.
-    if ($message = $this->validateRendering()) {
+    if ($options['rendering'] && ($message = $this->validateRendering())) {
       return [$message];
     }
 
@@ -407,7 +431,7 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
     catch (\Exception $exception) {
       $message = $exception->getMessage();
     }
-    // Restore  Drupal's error and exception handler.
+    // Restore Drupal's error and exception handler.
     restore_error_handler();
     restore_exception_handler();
 
