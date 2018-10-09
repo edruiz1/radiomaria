@@ -1,0 +1,12 @@
+.page--product--default {
+  .page-title>div {
+    display:inline-block;
+  }
+  .block-system-main-block article,
+  .block-system-main-block div {
+    display: flex;
+  }
+  .block-system-main-block article {
+    flex-direction: column;
+  }
+}
