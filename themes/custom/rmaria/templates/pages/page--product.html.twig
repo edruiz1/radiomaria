@@ -19,7 +19,46 @@
  * @ingroup themeable
  */
 #}
-<div>THIS IS MY PRODUCT!!!</div>
-<article{{ attributes }}>
-  {{- product|without('variation_attributes') -}}
-</article>
+<div class="page--product--default">
+
+  {# ---- Include HEADER Component ---- #}
+  {% include directory ~ '/templates/partials/header.html.twig' %}
+
+  <div class="page-content">
+    <div class="container">
+      {% if page.title %}
+        <div class="row">
+          {{ page.title }}
+        </div>
+      {% endif %}
+      <div class="row">
+        {% if page.content %}
+          {% set currentPage = basePath|replace({'/': ''}) %}
+          {% if page.sidebar %}
+            <main role="main" class="main--wrapper col-xs-12 col-md-8 {{ currentPage }}">
+              {{ page.content }}
+            </main>
+            <div class="col-xs-12 col-md-4 region--sidebar" role="complementary">
+              {{ page.sidebar }}
+            </div>
+          {% else %}
+            <main role="main" class="main--wrapper col-xs-12">
+              {{ page.content }}
+            </main>
+          {% endif %}
+        {% endif %}
+      </div>
+      <hr />
+    </div>
+  </div>
+
+  {# ---- Include FOOTER Component ---- #}
+  {% set data = { 'cssClasses': '' } %}
+  {% include directory ~ '/templates/partials/footer.html.twig' with data %}
+
+  {% include directory ~ '/templates/partials/browsersync.html.twig' %}
+</div>
+
+{% if page.aux %}
+  {{ page.aux }}
+{% endif %}
