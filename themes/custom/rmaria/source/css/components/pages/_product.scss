@@ -7,6 +7,9 @@
     display: flex;
   }
   .block-system-main-block article {
+    flex-direction: row;
+  }
+  .block-system-main-block div {
     flex-direction: column;
   }
 }
